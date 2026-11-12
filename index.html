@@ -1,1 +1,137 @@
-h
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Умник — образовательная платформа</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🎓 Умник</h1>
+    <p>Образовательная игровая платформа для школьников</p>
+    <div class="stats">
+      <div class="stat-box">⭐ Очки: <span id="score">0</span></div>
+      <div class="stat-box">🏆 Уровень: <span id="level">1</span></div>
+      <div class="stat-box">🎓 Класс: <span id="currentGrade">—</span></div>
+    </div>
+  </header>
+  
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('home', this)">🏠 Главная</button>
+    <button class="tab-btn" onclick="showTab('quiz', this)">🧠 Викторина</button>
+    <button class="tab-btn" onclick="showTab('math', this)">🔢 Математика</button>
+    <button class="tab-btn" onclick="showTab('memory', this)">🎴 Память</button>
+    <button class="tab-btn" onclick="showTab('word', this)">🔤 Слова</button>
+    <button class="tab-btn" onclick="showTab('facts', this)">💡 Факты</button>
+  </div>
+  
+  <!-- ГЛАВНАЯ -->
+  <div id="home" class="card">
+    <h2>Добро пожаловать! 👋</h2>
+    <p>Это образовательная платформа, где ты можешь проверить свои знания по разным предметам и одновременно играть!</p>
+    
+    <h3>🎮 Что тебя ждёт:</h3>
+    <div class="fact-box">
+      <p><strong>🧠 Викторина</strong> — вопросы по предметам для классов с 4 по 11</p>
+    </div>
+    <div class="fact-box">
+      <p><strong>🔢 Математика</strong> — быстрый счёт на время</p>
+    </div>
+    <div class="fact-box">
+      <p><strong>🎴 Память</strong> — игра на запоминание парных карточек</p>
+    </div>
+    <div class="fact-box">
+      <p><strong>🔤 Слова</strong> — угадай слово по буквам (Виселица)</p>
+    </div>
+    <div class="fact-box">
+      <p><strong>💡 Факты</strong> — интересные научные факты</p>
+    </div>
+    
+    <p style="margin-top: 20px; color: #666;">За правильные действия получаешь очки. Каждые 100 очков — новый уровень! 🚀</p>
+  </div>
+  
+  <!-- ВИКТОРИНА -->
+  <div id="quiz" class="card hidden">
+    <h2>🧠 Викторина по классам</h2>
+    
+    <div id="gradeSelection">
+      <p>Выбери свой класс:</p>
+      <div class="grades-grid" id="gradesGrid"></div>
+    </div>
+    
+    <div id="quizArea" class="hidden">
+      <div class="progress-bar"><div class="progress-fill" id="quizProgress"></div></div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div id="quizAnswers"></div>
+      <div id="quizMessage"></div>
+      <div class="center" style="margin-top: 20px;">
+        <button class="btn" id="quizStartBtn" onclick="startQuiz()">Начать викторину</button>
+        <button class="btn btn-secondary" onclick="backToGrades()">← Сменить класс</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- МАТЕМАТИКА -->
+  <div id="math" class="card hidden">
+    <h2>🔢 Математика</h2>
+    <p class="center">Реши пример и введи ответ. У тебя 60 секунд!</p>
+    <div class="center" style="margin: 15px 0;">
+      <span style="font-size: 1.3em;">⏱️ Время: <strong id="mathTime">60</strong> сек</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span style="font-size: 1.3em;">✅ Решено: <strong id="mathSolved">0</strong></span>
+    </div>
+    <div class="math-problem" id="mathProblem">— × —</div>
+    <input type="number" class="math-input" id="mathInput" placeholder="?" disabled>
+    <div class="center">
+      <button class="btn" id="mathCheckBtn" onclick="checkMath()" disabled>Проверить</button>
+      <button class="btn" id="mathStartBtn" onclick="startMath()">Играть</button>
+    </div>
+    <div id="mathMessage" class="center"></div>
+  </div>
+  
+  <!-- ПАМЯТЬ -->
+  <div id="memory" class="card hidden">
+    <h2>🎴 Найди пары</h2>
+    <p class="center">Переворачивай карточки и находи одинаковые символы!</p>
+    <div class="center" style="margin: 15px 0;">
+      Ходы: <strong id="memoryMoves">0</strong> | Найдено пар: <strong id="memoryPairs">0</strong> / 6
+    </div>
+    <div class="memory-grid" id="memoryGrid"></div>
+    <div class="center" style="margin-top: 20px;">
+      <button class="btn" onclick="initMemory()">Начать заново</button>
+    </div>
+    <div id="memoryMessage" class="center"></div>
+  </div>
+  
+  <!-- СЛОВА -->
+  <div id="word" class="card hidden">
+    <h2>🔤 Угадай слово</h2>
+    <p class="center">Это слово связано со школой или наукой. У тебя 6 ошибок.</p>
+    <div class="word-display" id="wordDisplay">_ _ _ _ _</div>
+    <div class="center" style="margin: 10px 0;">
+      Ошибки: <strong id="wordWrong">0</strong> / 6
+    </div>
+    <div class="letters" id="lettersContainer"></div>
+    <div class="center" style="margin-top: 20px;">
+      <button class="btn" onclick="initWord()">Новое слово</button>
+    </div>
+    <div id="wordMessage" class="center"></div>
+  </div>
+  
+  <!-- ФАКТЫ -->
+  <div id="facts" class="card hidden">
+    <h2>💡 Интересные факты</h2>
+    <div id="factDisplay" class="fact-box" style="font-size: 1.1em;">
+      Нажми кнопку, чтобы узнать случайный факт!
+    </div>
+    <div class="center" style="margin-top: 20px;">
+      <button class="btn" onclick="showRandomFact()">🎲 Случайный факт</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
